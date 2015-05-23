@@ -38,8 +38,6 @@ def ayuda(request):
         login = request.user     
     return render_to_response('ayuda.html', {'login':login},context_instance = RequestContext(request))
 def logout_page(request):
-    list = evento.objects.all()
-    list.delete()
     CssOriginal()
     if request.user.is_authenticated():
         logout(request)
