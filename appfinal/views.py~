@@ -1,0 +1,129 @@
+from django.shortcuts import render
+from django.template import RequestContext
+from django.template.loader import get_template 
+from django.shortcuts import render_to_response
+from django.http import HttpResponse, HttpResponseNotFound
+from appfinal.forms import LoginForm
+from xml.dom.minidom import parseString
+from django.contrib.auth import authenticate, login, logout
+import feedparser 
+import urllib2
+
+
+############################################################## FASE BETA ##############################################################
+
+def ayuda(request):
+    return render_to_response('ayuda.html', context_instance = RequestContext(request))
+def logout_page(request):
+    if request.user.is_authenticated():
+        logout(request)
+        salida = "Deslogueo completado" 
+        form = LoginForm()
+        return render_to_response('login.html', {'message':salida, 'form':form}, context_instance = RequestContext(request))     
+    else:
+        if request.method == "POST":          
+            salida = logueo(request)
+            form = LoginForm()
+            if salida == "Identificacion Correcta":
+                return render_to_response('login.html', {'message':salida}, context_instance = RequestContext(request))
+            else:
+                return render_to_response('login.html', {'message':salida, 'form':form}, context_instance = RequestContext(request))
+        else:
+            salida = "No estas Logueado"
+            form = LoginForm()
+            return render_to_response('login.html', {'message':salida, 'form':form}, context_instance = RequestContext(request))
+def login_page(request):
+    message = None
+    if request.user.is_authenticated():   
+        print "Estas Logueado"
+        salida = "Ya estas Logueado"
+        return render_to_response('login.html', {'message':salida}, context_instance = RequestContext(request))
+    else:
+        if request.method == "POST":          
+            salida = logueo(request)
+            form = LoginForm()
+            if salida == "Identificacion Correcta":
+                return render_to_response('login.html', {'message':salida}, context_instance = RequestContext(request))
+            else:
+                return render_to_response('login.html', {'message':salida, 'form':form}, context_instance = RequestContext(request))
+        else:
+            salida = "No estas Logueado"
+            form = LoginForm()
+            return render_to_response('login.html', {'message':salida, 'form':form}, context_instance = RequestContext(request))
+def logueo(request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username = username, password = password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    message = "Identificacion Correcta"                    
+                else:
+                    message = "Usuario Inactivo"
+            else:
+                message = "Nombre de Usuario y/o incorrecto"
+               
+        return message    
+
+############################################################## FASE ALPHA ##############################################################
+def todas(request):
+    salida = "Pagina inicio"
+    return render_to_response('todas.html', {'message': salida }, context_instance = RequestContext(request))
+
+def inicio(request,recurso):
+    file = urllib2.urlopen('http://datos.madrid.es/egob/catalogo/206974-0-agenda-eventos-culturales-100.xml')
+    data = file.read()
+    file.close()
+    salida = []
+    dom = parseString(data)
+    print data
+    print dom
+    print dom.getElementsByTagName('contenido').length
+    if(dom.getElementsByTagName('contenido').length > 0):
+		for number in range(10):
+		    contenidoList = dom.getElementsByTagName('contenido')[number + 1].getElementsByTagName('atributos')[0].getElementsByTagName('atributo')
+		    nombre = ""
+		    tipo = ""
+		    fecha = ""
+		    hora = ""
+		    largaduracion = ""
+		    url = ""
+		    precio = ""
+		    for eventos in range(len(contenidoList)):
+		        if contenidoList[eventos].attributes['nombre'].value == "TITULO":
+		            nombre = contenidoList[eventos].firstChild.nodeValue
+		        if contenidoList[eventos].attributes['nombre'].value == "TIPO":
+		            tipo = contenidoList[eventos].firstChild.nodeValue
+		        if contenidoList[eventos].attributes['nombre'].value == "FECHA-EVENTO":
+		            fecha = contenidoList[eventos].firstChild.nodeValue
+		        if contenidoList[eventos].attributes['nombre'].value == "HORA-EVENTO":
+		            hora = contenidoList[eventos].firstChild.nodeValue
+		        if contenidoList[eventos].attributes['nombre'].value == "EVENTO-LARGA-DURACION":
+		            if contenidoList[eventos].firstChild.nodeValue == "0":
+		                largaduracion = "No es un evento de Larga Duracion"
+		            else:
+		                largaduracion = "Si es un evento de Larga Duracion"
+		        if contenidoList[eventos].attributes['nombre'].value == "GRATUITO":
+		            if contenidoList[eventos].firstChild.nodeValue == "0":
+		                if contenidoList[eventos].attributes['nombre'].value == "PRECIO":
+		                    precio = contenidoList[eventos].firstChild.nodeValue
+		                else:
+		                    precio = "No hay informacion"
+		            else:
+		                precio = "Gratuito"
+		        if contenidoList[eventos].attributes['nombre'].value == "CONTENT-URL-ACTIVIDAD":
+		            url = contenidoList[eventos].firstChild.nodeValue
+		    valor = def_eventos(nombre, tipo, precio, fecha, hora, largaduracion, url)
+		    salida.insert(1,valor)
+		return render_to_response('inicio.html', {'message': salida }, context_instance = RequestContext(request))
+	else:
+		salida = "No hay elementos en la lista de eventos"
+		return render_to_response('todas.html', {'message': salida }, context_instance = RequestContext(request))
+
+def def_eventos(titulo, tipo, precio, fecha, hora, largaduracion, url):
+
+    salidas = {'Nombre':titulo, "Tipo":tipo.split("/")[3], "Precio":precio,  "Fecha":fecha.split(" ")[0], "Hora": hora, "Duracion":largaduracion, "Url":url}
+    print salidas
+    return salidas

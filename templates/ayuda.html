@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% block menu %}
+<nav class="navbar navbar-default" role="navigation">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-slide-dropdown">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#menu-toggle" id="menu-toggle">MENU</a>
+            </div>
+            {%if login%}
+             <div class="collapse navbar-collapse" id="bs-slide-dropdown">
+            <ul class="nav navbar-nav navbar-right" style="text-align:center">
+                        
+                      <p class = "navbar-brand" style = "text-aling:'center">Hola, {{login}}<a href = "/logout"> Logout</a></p></p></p>  
+                        </ul>
+            </div><!-- /.navbar-collapse -->
+            {% endif %}
+        </nav>
+{% endblock %}
+{% block login %}
+{%if login%}
+<li><a href="/{{login}}">Mi Pagina</a></li>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+    {% if message %}
+<b>{{message}}</b>
+    {% endif %}
+<h1 style="text-align:center">PAGINA DE AYUDA</h1>
+<p style="text-align:center">Bienvenidos a la pagina  de Ayuda de los eventos de Madrid </p>
+<p style="text-align:center"> Aqui tiene los enlaces a los que puede ir y una descripcion de como funcionan.</p>
+<p style="text-align:center"> Necesitas loguearte .-  
+<a href="/login" style="text-align:center"> Pagina de Login</a>
+<p style="text-align:center"> Necesitas Desloguearte .-
+<a href="/logout" style="text-align:center"> Pagina de Logout</a>
+<p style="text-align:center">Quieres ver Todos los eventos .-
+<a href="/todas" style="text-align:center"> Pagina de Eventos</a>
+<p style="text-align:center">Eventos mas relevantes .-
+<a href="/" style="text-align:center"> Pagina de Inicio</a>
+<p style="text-align:center">Tambien puedes ver la pagina de un usuario escribiendo.- localhost:8000/NombreUsuario
+<p style="text-align:center">Tambien puedes ver la pagina de una actividad.- localhost:8000/NombreActividad
+
+
+    {% endblock %}

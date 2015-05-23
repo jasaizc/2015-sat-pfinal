@@ -1,0 +1,134 @@
+{% extends 'index.html' %}
+{% block menu %}
+<nav class="navbar navbar-default" role="navigation">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-slide-dropdown">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#menu-toggle" id="menu-toggle">MENU</a>
+            </div>
+        
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-slide-dropdown">
+                <ul class="nav navbar-nav navbar-left">
+                    {%if login%}
+                    <li><a href="/actualizar">ACTUALIZAR</a></li>
+                       {% endif %}  
+                    <li><a href="javascript:ventanaNueva()">FILTRAR</a></li> 
+                    <li><a href="/todas/rss">RSS</a></li>   
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right" style="text-align:center">    
+                  {%if login%}
+                      <p class = "navbar-brand" style = "text-aling:'center">Eventos Totales: {{Totales}} - {{ HoraActualizada }}</p>  
+                  
+                 <p class = "navbar-brand" style = "text-aling:'right">Hola, {{login}}<a href = "/logout"> Logout</a></p>
+                 {% endif %}
+                  </ul> 
+                  <br>
+                  <ul class="nav navbar-nav navbar-left" style="text-align:center">
+                      
+                  </br>
+                  </ul> 
+            </div><!-- /.navbar-collapse -->
+            
+            
+            
+          </div><!-- /.container-fluid -->
+        </nav>
+        <div id= "menuoculto" class="row" style="visibility:hidden">
+            <form action="" method="post">
+             <li class="col-md-3">
+                  <select id = "selector" name = "filtro" class="form-control" >
+                            <option>Nombre</option>
+                            <option>Tipo</option>
+                            <option>Fecha</option>
+                            <option>Distrito</option>
+                         </select>     
+                     </li>
+                 <p class="col-md-4">   <input type="text" name = "texto" class="form-control" placeholder="Nombre,dia/mes/año,tipo...">               </p>  
+                 <input type="submit" class="btn btn-success" value="Enviar"></input>
+                 <button type="button" class="btn btn-danger" onclick=" document.getElementById('menuoculto').style.visibility='hidden';">Ocultar</button>  </p>   
+            </form>
+          </div >            
+{% endblock %}
+{% block login %}
+{%if login%}
+<li><a href="/{{login}}">Mi Pagina</a></li>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+{% load staticfiles %}
+<div style="text-align:center" id="mensajes">
+    <h3 style = "text-aling:'center">{{ Actualizaciones }}</h3>
+    
+<form>
+     {% if Info %}
+     <h3 style = "text-aling:'center">{{ Info }}</h3>
+     
+     {% endif %}
+    {% if lista %}
+        <fieldset>
+            <div class="col-md-12" id="mensajes">
+            {% for i in lista %}
+            <div class="[col-md-6 ]">
+				<ul class="event-list">
+<li>
+						<time>
+							<span class="day">{{i.dia}}</span>
+                             {% if i.mes == "01" %}   
+							<span class="month">Ene</span>
+                             {% elif  i.mes == "02" %}
+                             <span class="month">Feb</span>
+                              {% elif  i.mes == "03" %}
+                             <span class="month">Mar</span>
+                              {% elif  i.mes == "04" %}
+                             <span class="month">Abr</span>
+                             {% elif  i.mes == "05" %}
+                             <span class="month">May</span>
+                             {% elif  i.mes == "06" %}
+                             <span class="month">Jun</span>
+                             {% elif  i.mes == "07" %}
+                             <span class="month">Jul</span>
+                             {% elif  i.mes == "08" %}
+                             <span class="month">Ago</span>
+                             {% elif  i.mes == "09" %}
+                             <span class="month">Sep</span>
+                             {% elif  i.mes == "10" %}
+                             <span class="month">Oct</span>
+                             {% elif  i.mes == "11" %}
+                             <span class="month">Nov</span>
+                             {% elif  i.mes == "12" %}
+                             <span class="month">Dic</span>
+                            {% endif %}
+							<span class="year">{{i.ano}}</span>
+							
+						</time>
+						<div class="info">
+							<h2 class="title">{{i.nombre}}</h2>
+							<p class="desc">Hora: {{i.hora}}</p>
+							<ul>
+                                {% if login %}
+								<li style="width:50%;"><a href="/actividades/{{i.id}}"><span class="fa fa-globe"></span> Website</a></li>
+								<li style="width:50%;"><a href="/apuntarse/{{i.id}}"><span class="fa fa-globe"></span> Apuntarse</a></li>
+							     {% else %}
+                                 <li style="width:50%;"><a href="/actividades/{{i.id}}"><span class="fa fa-globe"></span> Website</a></li>
+								
+                                 {% endif %} 
+                            </ul>
+						</div>
+					</li>
+                </ul>
+            </div>
+            {% endfor %}
+      
+        </fieldset>
+          {% endif %}  
+    </form>
+    </div>
+{% endblock %}

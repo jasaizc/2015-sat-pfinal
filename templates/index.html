@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Practica de SAT - 2015">
+    <meta name="author" content="Jesus Alberto Saiz CAno">
+    <link rel="shortcut icon" href="http://blog.keopskefren.com/wp-content/uploads/<Logo-Ayuntamiento-Madrid class="jpg"></Logo-Ayuntamiento-Madrid>">    
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+     
+    
+    <title>Descubre Madrid</title>    
+    {% load staticfiles %}
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/simple-sidebar.css'%}" rel="stylesheet">
+    <link href="{% static 'css/TiposCss.css'%}" rel="stylesheet">
+    
+</head>
+<body>  
+    <div id="wrapper">
+        <header class="image-bg-fluid-height">
+            <img class="img-responsive img-center" src="{% static 'css/cabecera.jpg' %}" alt="">           
+        </header>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="/">Inicio</a></li>
+                <li><a href="/todas">Todas</a></li>
+                <li><a href="/login">Login</a></li>
+                {% block login %} {% endblock %}
+                <li><a href="/ayuda">Ayuda</a></li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+            {% block menu %} {% endblock %}
+        <div id="contenido">
+            {% block content %} {% endblock %}
+        </div>
+       
+    </div>
+    {% block mapa %} {% endblock %}
+
+  <footer>
+            
+            <div class="container" id="pie" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr>
+                        <p style="text-align:center">© Copyright  2015</p>
+                        <p style="text-align:center">Jesus Alberto Saiz Cano - SAT -</p>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </footer>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootlint/0.10.0/bootlint.min.js"></script>
+    <script src="{% static 'css/jquery.js' %}" ></script>
+    <script src="{% static 'css/bootstrap.min.js' %}"></script>
+    <script src="{% static 'css/jquery-1.11.2.min.js' %}"></script>
+    <script src="{% static 'css/geo.js' %}"></script>
+
+        
+    <!-- Menu Toggle Script -->
+    <script>
+    $(document).ready(function () {
+        $("#wrapper").toggleClass("toggled");
+        })
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+     function ventanaNueva() {
+            document.getElementById('menuoculto').style.visibility='visible';
+            };
+    
+    </script>
+ 
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Descubre Madrid</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="static/css/simple-sidebar.css" rel="stylesheet">
+</head>
+<body>  
+    <div id="wrapper">
+        <header class="image-bg-fluid-height">
+            <img class="img-responsive img-center" src="static/css/cabecera.jpg" alt="">
+        </header>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"><a href="/">Inicio</a></li>
+                <li><a href="/todas">Todas</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/ayuda">Ayuda</a></li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><img class="img-responsive img-center" src="static/css/menu.jpg" width="20" height="30"></a>
+        <div id="content">
+            {% block content %} {% endblock %}
+        </div>
+        <footer>
+            <hr  >
+            <div class="container" id="pie">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p style="text-align:center">© Copyright  2015</p>
+                        <p style="text-align:center">Jesus Alberto Saiz Cano - SAT -</p>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container -->
+        </footer>
+    </div>
+    
+
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootlint/0.10.0/bootlint.min.js"></script>
+    <script src="static/css/jquery.js"></script>
+    <script src="static/css/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $(document).ready(function () {
+        $("#wrapper").toggleClass("toggled");
+        })
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

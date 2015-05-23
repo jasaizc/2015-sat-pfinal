@@ -1,0 +1,48 @@
+﻿{% extends 'index.html' %}
+{% block menu %}
+<nav class="navbar navbar-default" role="navigation">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-slide-dropdown">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#menu-toggle" id="menu-toggle">MENU</a>
+            </div>
+
+           {%if login%}
+             <div class="collapse navbar-collapse" id="bs-slide-dropdown">
+            <ul class="nav navbar-nav navbar-right" style="text-align:center">
+                        
+                      <p class = "navbar-brand" style = "text-aling:'center">Hola, {{login}}<a href = "/logout"> Logout</a></p></p></p>  
+                        </ul>
+            </div><!-- /.navbar-collapse -->
+            {% endif %}
+        </nav>
+
+
+
+{% endblock %}
+{% block login %}
+{%if login%}
+<li><a href="/{{login}}">Mi Pagina</a></li>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+    {% if message %}
+    <h1 style="text-align:center">{{message}}</h1>
+    {% endif %}
+<p> </p>
+    <form style="text-align:center" action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        {% if form %}
+        <input style="text-align:center" type="submit" value="Enviar" />
+        {% endif %}
+    </form>
+<p> </p>
+{% endblock %}
